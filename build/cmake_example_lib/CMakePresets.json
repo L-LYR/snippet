@@ -1,0 +1,83 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 19,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "description": "base preset",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_CXX_STANDARD": "20",
+                "CMAKE_CXX_FLAGS": "-g -Wall -Wextra"
+            }
+        },
+        {
+            "name": "debug",
+            "description": "preset for debug",
+            "inherits": [
+                "base"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "EXAMPLE_LIB_BUILD_TESTS": "ON",
+                "EXAMPLE_LIB_BUILD_EXAMPLES": "ON"
+            }
+        },
+        {
+            "name": "release",
+            "description": "preset for release",
+            "inherits": [
+                "base"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "base",
+            "configurePreset": "base",
+            "jobs": 8,
+            "nativeToolOptions": []
+        },
+        {
+            "name": "debug",
+            "configurePreset": "debug",
+            "verbose": true,
+            "inherits": [
+                "base"
+            ],
+            "nativeToolOptions": []
+        },
+        {
+            "name": "release",
+            "configurePreset": "release",
+            "inherits": [
+                "base"
+            ],
+            "nativeToolOptions": []
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "debug",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        }
+    ]
+}
