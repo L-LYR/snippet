@@ -2,3 +2,5 @@
 .vscode
 todo
 .cache
+.DS_Store
+main
