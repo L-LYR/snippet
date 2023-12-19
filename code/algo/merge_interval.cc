@@ -9,7 +9,10 @@ struct Intervals {
   }
 
   void add(int left, int right) {
+    // to merge [x, y] [y + 1, z] into [x, z]
     auto iter = intervals.lower_bound(left - 1);
+    // auto iter = intervals.lower_bound(left);
+    // not to merge [x, y] [y + 1, z] into [x, z]
     while (iter != intervals.end()) {
       if (iter->second > right) {
         break;
