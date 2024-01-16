@@ -3,11 +3,12 @@
 */
 #include <chrono>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <tuple>
 #include <unordered_map>
 
-template <class T> inline void HashCombine(std::size_t &seed, T const &v) {
+template <class T> inline void hash_combine(std::size_t &seed, T const &v) {
   seed ^= std::hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
@@ -15,13 +16,13 @@ template <class Tuple, size_t Index = std::tuple_size<Tuple>::value - 1>
 struct HashValueImpl {
   static void apply(size_t &seed, Tuple const &tuple) {
     HashValueImpl<Tuple, Index - 1>::apply(seed, tuple);
-    HashCombine(seed, std::get<Index>(tuple));
+    hash_combine(seed, std::get<Index>(tuple));
   }
 };
 
 template <class Tuple> struct HashValueImpl<Tuple, 0> {
   static void apply(size_t &seed, Tuple const &tuple) {
-    HashCombine(seed, std::get<0>(tuple));
+    hash_combine(seed, std::get<0>(tuple));
   }
 };
 
@@ -47,10 +48,13 @@ struct FuncTraits<ReturnType (Fn::*)(ParamsType...) const> {
   using Args = std::tuple<ParamsType...>;
 };
 
+template <typename Fn, size_t i>
+using FnArg = FuncTraits<Fn>::template ArgType<i>;
 template <typename Fn> using FnArgs = FuncTraits<Fn>::Args;
 template <typename Fn> using FnR = FuncTraits<Fn>::R;
 
-template <typename Fn> struct Memorize {
+template <typename Fn> class Memorize {
+public:
   explicit Memorize(Fn fn) : fn(fn) {}
 
   template <typename... Args> auto operator()(Args... args) {
@@ -64,6 +68,7 @@ template <typename Fn> struct Memorize {
     }
   }
 
+private:
   Fn fn;
   std::unordered_map<FnArgs<Fn>, FnR<Fn>> memo;
 };
@@ -77,11 +82,9 @@ public:
   using microseconds = std::chrono::microseconds;
   using nanoseconds = std::chrono::nanoseconds;
 
-public:
   Timer() = default;
   ~Timer() = default;
 
-public:
   auto begin() -> void { b = clock::now(); }
   auto end() -> void { e = clock::now(); }
 
@@ -96,15 +99,17 @@ private:
 
 class TimerGuard {
 public:
-  TimerGuard() { t.begin(); }
+  explicit TimerGuard(std::string what) : what(what) { t.begin(); }
   ~TimerGuard() {
     t.end();
-    std::cout << "Elapsed = " << t.elapsed<Timer::microseconds>() << "us"
+    std::cout << std::setw(20) << what
+              << " elapsed = " << t.elapsed<Timer::microseconds>() << "us"
               << std::endl;
   }
 
 private:
   Timer t;
+  std::string what;
 };
 
 int main() {
@@ -127,12 +132,12 @@ int main() {
       }));
 
   {
-    TimerGuard g;
-    std::cout << "fib(40) = " << memo_fib(40) << std::endl;
+    TimerGuard g("fib(40)");
+    memo_fib(40);
   }
   {
-    TimerGuard g;
-    std::cout << "naive_fib(40) = " << naive_fib(40) << std::endl;
+    TimerGuard g("naive_fib(40)");
+    naive_fib(40);
   }
 
   // integer partition
@@ -162,12 +167,12 @@ int main() {
       }));
 
   {
-    TimerGuard g;
-    std::cout << "memo_p(100, 40) = " << memo_p(100, 40) << std::endl;
+    TimerGuard g("memo_p(100, 40)");
+    memo_p(100, 40);
   }
   {
-    TimerGuard g;
-    std::cout << "naive_p(100, 40) = " << naive_p(100, 40) << std::endl;
+    TimerGuard g("naive_p(100, 40)");
+    naive_p(100, 40);
   }
 
   return 0;
