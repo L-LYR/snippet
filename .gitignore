@@ -1,6 +1,10 @@
-.clangd
 .vscode
 todo
 .cache
 .DS_Store
 main
+target
+metals.sbt
+.metals
+.bloop
+project
