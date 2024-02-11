@@ -8,3 +8,5 @@ metals.sbt
 .metals
 .bloop
 project
+.make.sh
+.clangd

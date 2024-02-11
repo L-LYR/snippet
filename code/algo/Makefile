@@ -12,6 +12,9 @@ CXX_LINK_PATH =
 CXX_INCLUDE_PATH += $(shell pkg-config --cflags catch2-with-main)
 CXX_LINK_PATH += $(shell pkg-config --libs catch2-with-main)
 
+# add ranges
+CXX_INCLUDE_PATH += -I$(RANGES_V3_PATH)
+
 $(TARGET_NAME): $(what).cc
 	$(CXX) $(CXX_FLAGS) $(CXX_INCLUDE_PATH) $^ $(CXX_LINK_PATH) -o $@
 
