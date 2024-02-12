@@ -8,7 +8,8 @@
 #include <tuple>
 #include <unordered_map>
 
-template <class T> inline void hash_combine(std::size_t &seed, T const &v) {
+template <class T>
+inline void hash_combine(std::size_t &seed, T const &v) {
   seed ^= std::hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
@@ -20,13 +21,15 @@ struct HashValueImpl {
   }
 };
 
-template <class Tuple> struct HashValueImpl<Tuple, 0> {
+template <class Tuple>
+struct HashValueImpl<Tuple, 0> {
   static void apply(size_t &seed, Tuple const &tuple) {
     hash_combine(seed, std::get<0>(tuple));
   }
 };
 
-template <typename... Ts> struct std::hash<std::tuple<Ts...>> {
+template <typename... Ts>
+struct std::hash<std::tuple<Ts...>> {
   size_t operator()(std::tuple<Ts...> const &t) const {
     size_t seed = 0;
     HashValueImpl<std::tuple<Ts...>>::apply(seed, t);
@@ -50,14 +53,18 @@ struct FuncTraits<ReturnType (Fn::*)(ParamsType...) const> {
 
 template <typename Fn, size_t i>
 using FnArg = FuncTraits<Fn>::template ArgType<i>;
-template <typename Fn> using FnArgs = FuncTraits<Fn>::Args;
-template <typename Fn> using FnR = FuncTraits<Fn>::R;
+template <typename Fn>
+using FnArgs = FuncTraits<Fn>::Args;
+template <typename Fn>
+using FnR = FuncTraits<Fn>::R;
 
-template <typename Fn> class Memorize {
-public:
+template <typename Fn>
+class Memorize {
+ public:
   explicit Memorize(Fn fn) : fn(fn) {}
 
-  template <typename... Args> auto operator()(Args... args) {
+  template <typename... Args>
+  auto operator()(Args... args) {
     auto key = std::make_tuple(args...);
     if (auto iter = memo.find(key); iter != memo.end()) {
       return iter->second;
@@ -68,14 +75,14 @@ public:
     }
   }
 
-private:
+ private:
   Fn fn;
   std::unordered_map<FnArgs<Fn>, FnR<Fn>> memo;
 };
 
 class Timer {
-public:
-  using clock = std::chrono::steady_clock; // monotonic clock
+ public:
+  using clock = std::chrono::steady_clock;  // monotonic clock
   using time_point = std::chrono::time_point<clock>;
   using seconds = std::chrono::seconds;
   using milliseconds = std::chrono::milliseconds;
@@ -88,17 +95,18 @@ public:
   auto begin() -> void { b = clock::now(); }
   auto end() -> void { e = clock::now(); }
 
-  template <typename T> auto elapsed() -> int {
+  template <typename T>
+  auto elapsed() -> int {
     return std::chrono::duration_cast<T>(e - b).count();
   }
 
-private:
+ private:
   time_point b;
   time_point e;
 };
 
 class TimerGuard {
-public:
+ public:
   explicit TimerGuard(std::string what) : what(what) { t.begin(); }
   ~TimerGuard() {
     t.end();
@@ -107,7 +115,7 @@ public:
               << std::endl;
   }
 
-private:
+ private:
   Timer t;
   std::string what;
 };

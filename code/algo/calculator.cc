@@ -24,26 +24,26 @@ int eval(std::string_view sv) {
     ops.pop();
     int result = 0;
     switch (op) {
-    case '+': {
-      result = left + right;
-    } break;
-    case '-': {
-      result = left - right;
-    } break;
-    case '*': {
-      result = left * right;
-    } break;
-    case '/': {
-      result = left / right;
-    } break;
-    case '%': {
-      result = left % right;
-    } break;
-    case '^': {
-      result = std::pow(left, right);
-    } break;
-    default: {
-    } break;
+      case '+': {
+        result = left + right;
+      } break;
+      case '-': {
+        result = left - right;
+      } break;
+      case '*': {
+        result = left * right;
+      } break;
+      case '/': {
+        result = left / right;
+      } break;
+      case '%': {
+        result = left % right;
+      } break;
+      case '^': {
+        result = std::pow(left, right);
+      } break;
+      default: {
+      } break;
     }
     std::cout << left << op << right << "=" << result << std::endl;
     opds.push(result);
@@ -53,47 +53,47 @@ int eval(std::string_view sv) {
   bool has_opd = false;
   for (auto c : sv) {
     switch (c) {
-    case '(': {
-      ops.push(c);
-    } break;
-    case ')': {
-      if (has_opd) {
-        opds.push(x);
-        x = 0;
-        has_opd = false;
-      }
-      while (!ops.empty()) {
-        if (ops.top() != '(') {
-          do_calc();
-        } else {
-          ops.pop();
-          break;
-        }
-      }
-    } break;
-    default: {
-      if (std::isdigit(c)) {
-        x = x * 10 + (c - '0');
-        has_opd = true;
-      } else if (std::isspace(c)) {
-        continue;
-      } else {
+      case '(': {
+        ops.push(c);
+      } break;
+      case ')': {
         if (has_opd) {
           opds.push(x);
           x = 0;
           has_opd = false;
         }
-        while (!ops.empty() && ops.top() != '(') {
-          char prev_op = ops.top();
-          if (op2prio[prev_op] >= op2prio[c]) {
+        while (!ops.empty()) {
+          if (ops.top() != '(') {
             do_calc();
           } else {
+            ops.pop();
             break;
           }
         }
-        ops.push(c);
-      }
-    } break;
+      } break;
+      default: {
+        if (std::isdigit(c)) {
+          x = x * 10 + (c - '0');
+          has_opd = true;
+        } else if (std::isspace(c)) {
+          continue;
+        } else {
+          if (has_opd) {
+            opds.push(x);
+            x = 0;
+            has_opd = false;
+          }
+          while (!ops.empty() && ops.top() != '(') {
+            char prev_op = ops.top();
+            if (op2prio[prev_op] >= op2prio[c]) {
+              do_calc();
+            } else {
+              break;
+            }
+          }
+          ops.push(c);
+        }
+      } break;
     }
   }
   while (!ops.empty()) {

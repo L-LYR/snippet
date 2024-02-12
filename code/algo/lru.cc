@@ -2,7 +2,7 @@
 #include <unordered_map>
 
 class LRUCache {
-public:
+ public:
   int cap;
   std::list<std::pair<int, int>> slots;
   std::unordered_map<int, decltype(slots)::iterator> keyToSlot;

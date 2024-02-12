@@ -13,3 +13,28 @@ std::vector<std::string_view> split(std::string_view sv, std::string sep) {
   }
   return tokens;
 }
+
+#include <functional>
+std::vector<int> find(std::string_view source, std::string_view target) {
+  int n = target.size();
+
+  srand(time(0));
+  int mod = 998244353 + rand() % 10007;
+  int base = 33 + rand() % 233;
+
+  long long power[n + 1];
+  power[0] = 1;
+  for (int i = 1; i <= n; i++) {
+    power[i] = power[i - 1] * base % mod;
+  }
+
+  long long h[n + 1];
+  h[0] = 0;
+  for (int i = 1; i <= n; i++) {
+    h[i] = (h[i - 1] * base + target[i - 1] - 'a') % mod;
+  }
+
+  auto query = [&](int l, int r) {
+    return (h[r] - h[l - 1] * power[r - l + 1] % mod + mod) % mod;
+  };
+}

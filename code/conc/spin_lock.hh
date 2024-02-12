@@ -12,11 +12,11 @@ inline auto pause() -> void {}
 #endif
 
 class Spinlock {
-public:
+ public:
   Spinlock() = default;
   ~Spinlock() = default;
 
-public:
+ public:
   auto lock() -> void {
     while (true) {
       if (not b.exchange(true, std::memory_order_acquire)) {
@@ -35,6 +35,6 @@ public:
 
   auto unlock() -> void { b.store(false, std::memory_order_release); }
 
-private:
+ private:
   std::atomic_bool b{false};
 };

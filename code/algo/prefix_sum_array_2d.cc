@@ -8,11 +8,11 @@ struct DifferenceArray2D {
   std::vector<std::vector<int>> diff_arr;
   DifferenceArray2D(const std::vector<std::vector<int>> &origin) {
     diff_arr.resize(origin.size() + 1,
-                      std::vector<int>(origin[0].size() + 1, 0));
+                    std::vector<int>(origin[0].size() + 1, 0));
     for (int i = 1; i <= origin.size(); i++) {
       for (int j = 1; j <= origin[0].size(); j++) {
         diff_arr[i][j] = diff_arr[i - 1][j] + diff_arr[i][j - 1] -
-                           diff_arr[i - 1][j - 1] + origin[i - 1][j - 1];
+                         diff_arr[i - 1][j - 1] + origin[i - 1][j - 1];
       }
     }
   }

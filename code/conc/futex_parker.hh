@@ -27,11 +27,11 @@ static constexpr uint32_t EMPTY = 0;
 static constexpr uint32_t NOTIFIED = 1;
 
 class Parker {
-private:
-  bool is_private; // not shared between processes
+ private:
+  bool is_private;  // not shared between processes
   std::atomic_uint32_t park_futex{EMPTY};
 
-public:
+ public:
   explicit Parker(bool is_private = true) : is_private(is_private) {}
 
   void park() {

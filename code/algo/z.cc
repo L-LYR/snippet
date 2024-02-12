@@ -7,7 +7,7 @@
 
 auto generate_z(std::string_view &&txt) -> std::vector<int> {
   auto z = std::vector<int>(txt.size(), 0);
-  for (auto i = 1, l = 0, r = 0; i < txt.size(); i++) { // [l, r]
+  for (auto i = 1, l = 0, r = 0; i < txt.size(); i++) {  // [l, r]
     auto &j = z[i];
     j = std::max(0, std::min(z[i - l], r - i + 1));
     while (i + j < txt.size() && txt[j] == txt[i + j]) {

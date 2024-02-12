@@ -5,8 +5,8 @@
 
 const constexpr static int inf = 0x3f3f3f3f;
 
-std::vector<std::vector<int>>
-floyd(const std::vector<std::vector<int>> &g_mat) {
+std::vector<std::vector<int>> floyd(
+    const std::vector<std::vector<int>> &g_mat) {
   int n = g_mat.size();
   auto distance = g_mat;
   for (int k = 0; k < n; k++) {
@@ -20,9 +20,9 @@ floyd(const std::vector<std::vector<int>> &g_mat) {
   return distance;
 };
 
-using node_t = std::pair<int, int>; // <distance, target>
-std::vector<std::vector<int>>
-dijkstra(const std::vector<std::vector<node_t>> &g_adj) {
+using node_t = std::pair<int, int>;  // <distance, target>
+std::vector<std::vector<int>> dijkstra(
+    const std::vector<std::vector<node_t>> &g_adj) {
   int n = g_adj.size();
   std::vector<std::vector<int>> distance(n, std::vector<int>(n, inf));
   auto fn = [&](int s) {

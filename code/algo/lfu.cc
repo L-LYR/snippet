@@ -10,7 +10,7 @@ class LFUCache {
   std::unordered_map<int, Slots> freqToSlots;
   std::unordered_map<int, Slots::iterator> keyToSlot;
 
-private:
+ private:
   std::optional<Slots::iterator> getSlot(int key) {
     if (auto slot = keyToSlot.find(key); slot != keyToSlot.end()) {
       auto &[_, value, freq] = *(slot->second);
@@ -25,7 +25,7 @@ private:
     return std::nullopt;
   }
 
-public:
+ public:
   LFUCache(int capacity) : capacity(capacity), minFreq(0) {}
 
   int get(int key) {

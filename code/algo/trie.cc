@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 
-template <size_t Depth = 1'000'000, size_t Width = 255> struct Trie {
+template <size_t Depth = 1'000'000, size_t Width = 255>
+struct Trie {
   int node[Depth][Width];
   int count;
   bool exist[Depth];

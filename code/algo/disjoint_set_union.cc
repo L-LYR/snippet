@@ -5,7 +5,7 @@ class DisjointSetUnion {
   std::vector<int> rank;
   std::vector<int> size;
 
-public:
+ public:
   DisjointSetUnion(int n) : parent(n + 1), rank(n + 1), size(n + 1) {
     for (int i = 1; i <= n; i++) {
       parent[i] = i;

@@ -5,7 +5,6 @@ void gospers_hack(int k, int n) {
   int cur = (1 << k) - 1;
   int limit = (1 << n);
   while (cur < limit) {
-
     std::cout << std::bitset<5>(cur) << std::endl;
 
     int lb = cur & -cur;
@@ -22,7 +21,6 @@ void show_permutation(int k, int n) {
 }
 
 int main() {
-
   gospers_hack(3, 5);
 
   std::cout << std::endl;
@@ -31,4 +29,3 @@ int main() {
 
   return 0;
 }
-
