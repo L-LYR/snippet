@@ -39,19 +39,19 @@ TEST_CASE("Get Prime Factors of Number", "[normal case]") {
 template <size_t LIMIT>
 struct PrimeSet {
   std::vector<int> primes;
-  bool is_prime[LIMIT];
+  bool not_prime[LIMIT];
 
   PrimeSet() {
-    memset(is_prime, false, sizeof(is_prime));
+    memset(not_prime, false, sizeof(not_prime));
     for (int i = 2; i < LIMIT; ++i) {
-      if (!is_prime[i]) {
+      if (!not_prime[i]) {
         primes.push_back(i);
       }
       for (int p : primes) {
         if (i * p >= LIMIT) {
           break;
         }
-        is_prime[i * p] = true;
+        not_prime[i * p] = true;
         if (i % p == 0) {
           break;
         }

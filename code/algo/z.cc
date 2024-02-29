@@ -7,7 +7,7 @@
 
 auto generate_z(std::string_view &&txt) -> std::vector<int> {
   auto z = std::vector<int>(txt.size(), 0);
-  for (auto i = 1, l = 0, r = 0; i < txt.size(); i++) {  // [l, r]
+  for (auto i = 1, l = 0, r = 0; i < txt.size(); i++) { // [l, r]
     auto &j = z[i];
     j = std::max(0, std::min(z[i - l], r - i + 1));
     while (i + j < txt.size() && txt[j] == txt[i + j]) {
@@ -40,7 +40,7 @@ auto match(std::string_view txt, std::string_view pat, char sep)
   auto result = std::vector<int>();
   for (int i = 0; i < txt.size(); i++) {
     if (z[i + pat.size() + 1] == pat.size()) {
-      result.push_back(i - pat.size());
+      result.push_back(i);
     }
   }
   return result;
@@ -54,6 +54,6 @@ auto match(std::string_view txt, std::string_view pat, char sep)
 TEST_CASE("Match With Z", "normal case") {
   auto text = "abababzabababab";
   auto pattern = "aba";
-  auto z = match(std::string_view(text), std::string_view(pattern), '#');
-  REQUIRE(z == std::vector<int>{0, 2, 7, 9, 11});
+  auto result = match(std::string_view(text), std::string_view(pattern), '#');
+  REQUIRE(result == std::vector<int>{0, 2, 7, 9, 11});
 }

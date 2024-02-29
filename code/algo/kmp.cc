@@ -38,6 +38,6 @@ auto match(std::string_view txt, std::string_view pat, char sep)
 TEST_CASE("Match With P", "normal case") {
   auto text = "abababzabababab";
   auto pattern = "aba";
-  auto z = match(std::string_view(text), std::string_view(pattern), '#');
-  REQUIRE(z == std::vector<int>{0, 2, 7, 9, 11});
+  auto result = match(std::string_view(text), std::string_view(pattern), '#');
+  REQUIRE(result == std::vector<int>{0, 2, 7, 9, 11});
 }
