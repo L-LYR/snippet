@@ -10,3 +10,4 @@ metals.sbt
 project
 .make.sh
 .clangd
+Cargo.lock
