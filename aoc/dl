@@ -1,0 +1,6 @@
+#!/bin/bash
+
+year=$1
+day=$2
+
+curl -s "https://adventofcode.com/$year/day/$day" | sed -n "/<article .*>/,/<\/article>/p" | html2text -ascii -nobs -o "aoc.$year.$day"
