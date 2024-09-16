@@ -1,3 +1,5 @@
+#![feature(control_flow_enum)]
+
 mod aoc2018;
 mod util;
 

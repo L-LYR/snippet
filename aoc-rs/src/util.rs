@@ -18,6 +18,7 @@ where
     let mut w = LineWriter::new(File::create(path)?);
     lines.iter().try_for_each(|l| -> io::Result<()> {
         w.write(l.as_bytes())?;
+        w.write(b"\n")?;
         Ok(())
     })
 }
