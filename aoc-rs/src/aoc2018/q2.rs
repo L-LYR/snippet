@@ -40,17 +40,13 @@ impl crate::Solution for Solution {
         let common_letters = (0..ids.len())
             .flat_map(|i| (i + 1..ids.len()).map(move |j| (i, j)))
             .flat_map(|(i, j)| {
-                match zip(ids[i].chars(), ids[j].chars()).enumerate().fold(
-                    (0, 0),
-                    |(idx, count), (cidx, (ci, cj))| {
-                        if ci == cj {
-                            (idx, count)
-                        } else {
-                            (cidx, count + 1)
-                        }
-                    },
-                ) {
-                    (idx, 1) => Some(
+                let diff = zip(ids[i].chars(), ids[j].chars())
+                    .enumerate()
+                    .filter(|(_, (ci, cj))| ci != cj)
+                    .map(|(idx, _)| idx)
+                    .collect::<Vec<usize>>();
+                match diff[..] {
+                    [idx] => Some(
                         ids[i]
                             .chars()
                             .take(idx)
